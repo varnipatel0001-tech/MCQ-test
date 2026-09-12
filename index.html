@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Maker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div>
+        <h1>MCQ Maker</h1>
+        <p>Create & share tests</p>
+    </div>
+
+    <nav>
+        <button class="nav-btn active" onclick="showPage('home')">
+            Home
+        </button>
+
+        <button class="nav-btn" onclick="showPage('create')">
+            Create MCQ
+        </button>
+
+        <button class="nav-btn" onclick="showPage('manage')">
+            My Questions
+        </button>
+    </nav>
+</header>
+
+
+<main>
+
+    <!-- ================= HOME ================= -->
+
+    <section id="home" class="page active">
+
+        <div class="hero">
+
+            <h2>Create your own MCQ test.</h2>
+
+            <p>
+                Build questions, generate a shareable link,
+                and send the test directly to someone.
+            </p>
+
+            <button
+                class="primary-btn"
+                onclick="showPage('create')"
+            >
+                Create MCQ
+            </button>
+
+        </div>
+
+
+        <div class="info-grid">
+
+            <div class="info-card">
+                <span>01</span>
+                <h3>Create</h3>
+                <p>
+                    Add questions and unlimited options.
+                </p>
+            </div>
+
+            <div class="info-card">
+                <span>02</span>
+                <h3>Generate</h3>
+                <p>
+                    Turn your test into a shareable link.
+                </p>
+            </div>
+
+            <div class="info-card">
+                <span>03</span>
+                <h3>Share</h3>
+                <p>
+                    Send the link to anyone.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CREATE ================= -->
+
+    <section id="create" class="page">
+
+        <div class="create-container">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Create MCQ Test</h2>
+                    <p>Build your test question by question.</p>
+                </div>
+
+            </div>
+
+
+            <!-- TEST DETAILS -->
+
+            <div class="card">
+
+                <h3>Test Details</h3>
+
+                <label>Test Title</label>
+
+                <input
+                    type="text"
+                    id="testTitle"
+                    placeholder="Example: C++ Basics Test"
+                >
+
+
+                <label>Description</label>
+
+                <textarea
+                    id="testDescription"
+                    placeholder="Optional description..."
+                ></textarea>
+
+            </div>
+
+
+            <!-- QUESTIONS -->
+
+            <div class="card">
+
+                <div class="question-header">
+
+                    <h3>Questions</h3>
+
+                    <button
+                        class="secondary-btn"
+                        onclick="addQuestion()"
+                    >
+                        + Add Question
+                    </button>
+
+                </div>
+
+                <div id="builderQuestions"></div>
+
+            </div>
+
+
+            <button
+                class="primary-btn generate-btn"
+                onclick="generateShareLink()"
+            >
+                🔗 Generate Shareable Link
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MANAGE ================= -->
+
+    <section id="manage" class="page">
+
+        <div class="section-header">
+
+            <div>
+                <h2>Saved Questions</h2>
+                <p>Questions saved on this device.</p>
+            </div>
+
+            <button
+                class="primary-btn"
+                onclick="showPage('create')"
+            >
+                + Create Test
+            </button>
+
+        </div>
+
+        <div id="savedQuestions"></div>
+
+    </section>
+
+
+    <!-- ================= SHARE ================= -->
+
+    <section id="sharePage" class="page">
+
+        <div class="share-container">
+
+            <div class="success-icon">
+                ✓
+            </div>
+
+            <h2>Your test is ready!</h2>
+
+            <p>
+                Copy this link and send it to the person
+                taking the test.
+            </p>
+
+
+            <div class="share-box">
+
+                <input
+                    type="text"
+                    id="shareLink"
+                    readonly
+                >
+
+                <button
+                    class="primary-btn"
+                    onclick="copyShareLink()"
+                >
+                    Copy
+                </button>
+
+            </div>
+
+
+            <button
+                class="secondary-btn"
+                onclick="shareTest()"
+            >
+                📤 Share
+            </button>
+
+
+            <button
+                class="text-btn"
+                onclick="showPage('create')"
+            >
+                ← Back to editor
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= STUDENT TEST ================= -->
+
+    <section id="studentTest" class="page">
+
+        <div class="student-container">
+
+            <div id="testIntro">
+
+                <div class="test-intro-card">
+
+                    <span class="small-label">
+                        MCQ TEST
+                    </span>
+
+                    <h2 id="studentTestTitle">
+                        Test
+                    </h2>
+
+                    <p id="studentTestDescription"></p>
+
+                    <div class="test-info">
+
+                        <div>
+                            <strong id="studentQuestionCount">
+                                0
+                            </strong>
+
+                            <span>Questions</span>
+                        </div>
+
+                    </div>
+
+                    <button
+                        class="primary-btn full"
+                        onclick="startStudentTest()"
+                    >
+                        Start Test
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUESTION -->
+
+            <div
+                id="studentQuestionScreen"
+                class="hidden"
+            >
+
+                <div class="student-top">
+
+                    <span id="studentQuestionNumber">
+                        Question 1 / 10
+                    </span>
+
+                    <span id="studentScore">
+                        Score: 0 Marks
+                    </span>
+
+                </div>
+
+
+                <div class="progress-bar">
+
+                    <div id="studentProgress"></div>
+
+                </div>
+
+
+                <div class="student-question-card">
+
+                    <div class="student-meta">
+
+                        <span id="studentMarks">Marks: 1</span>
+
+                        <span id="studentSubject"></span>
+
+                        <span id="studentDifficulty"></span>
+
+                    </div>
+
+
+                    <h2 id="studentQuestion"></h2>
+
+
+                    <div id="studentOptions"></div>
+
+
+                    <div id="studentFeedback"></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RESULT -->
+
+            <div
+                id="studentResult"
+                class="hidden"
+            >
+
+                <div class="result-card">
+
+                    <span class="small-label">
+                        TEST COMPLETE
+                    </span>
+
+                    <h2>Finished!</h2>
+
+                    <div
+                        class="big-score"
+                        id="studentFinalScore"
+                    >
+                        0/0
+                    </div>
+
+                    <p id="studentResultMessage"></p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================= MODAL ================= -->
+
+<div
+    id="toast"
+    class="toast"
+>
+    Link copied!
+</div>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
